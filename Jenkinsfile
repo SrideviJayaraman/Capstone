@@ -5,7 +5,7 @@ pipeline {
         stage('Clone and Build') {
             steps {
                 checkout scm
-                dir('Capstone/Infrastructure/Terraform_and_Ansible) {
+                dir('Capstone/Infrastructure/Terraform_and_Ansible') {
                     script {
                         sh 'sudo docker build -t sridevi4/capstone:5.0 .'
                         sh 'sudo docker login -u sridevi4 -p Docker@04'
@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Terraform and Environment Variables') {
             steps {
-                dir('Capstone') {
+                dir('Capstone/Infrastructure/Terraform_and_Ansible') { // Corrected the directory path
                     script {
                         sh 'terraform init'
                         sh 'terraform plan -out=tfplan'
@@ -25,13 +25,12 @@ pipeline {
                         // Store Terraform outputs as environment variables
                         TF_VAR_output_instance_id = sh(script: 'terraform output -raw output_name_1', returnStdout: true).trim()
                         TF_VAR_output_public_ip = sh(script: 'terraform output -raw output_name_2', returnStdout: true).trim()
-                        TF_VAR_output_private_ip = sh(script: 'terraform output -raw output_name_2', returnStdout: true).trim()
+                        TF_VAR_output_private_ip = sh(script: 'terraform output -raw output_name_3', returnStdout: true).trim() // Corrected the output_name for private_ip
+
                         // Print the output values
                         echo "Instance id: ${TF_VAR_output_instance_id}"
                         echo "Public ip: ${TF_VAR_output_public_ip}"
                         echo "Private ip: ${TF_VAR_output_private_ip}"
-
-                        
                     }
                 }
             }
