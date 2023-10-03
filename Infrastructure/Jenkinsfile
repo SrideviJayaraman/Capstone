@@ -5,7 +5,7 @@ pipeline {
         stage('Clone and Build') {
             steps {
                 checkout scm
-                dir('Capstone/Infrastructure/Terraform_and_Ansible) {
+                dir('Capstone/Application) {
                     script {
                         sh 'sudo docker build -t sridevi4/capstone:5.0 .'
                         sh 'sudo docker login -u sridevi4 -p Docker@04'
@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Terraform and Environment Variables') {
             steps {
-                dir('Capstone') {
+               dir('Capstone/Infrastructure/Terraform_and_Ansible) {
                     script {
                         sh 'terraform init'
                         sh 'terraform plan -out=tfplan'
