@@ -5,7 +5,7 @@ pipeline {
         stage('Clone and Build') {
             steps {
                 checkout scm
-                dir('Capstone/Application') {
+                dir('Capstone') {
                     script {
                         sh 'docker build -t sridevi4/capstone:5.0 .'
                         sh 'docker login -u sridevi4 -p Docker@04'
